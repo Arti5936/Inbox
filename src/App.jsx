@@ -1,10 +1,8 @@
-import { useState, createContext, useContext } from "react";
+import React, { useState, createContext, useContext } from "react";
 import { SuprSendProvider, useEvent } from "@suprsend/react-inbox";
 import { ToastContainer, toast } from "react-toastify";
-import { getStyles } from "./styles";
+import darkTheme from "./darkTheme"; // Import the dark theme
 import PopUpInbox from "./PopUpInbox";
-import SideSheetInbox from "./SideSheetInbox";
-import FullScreenInbox from "./FullScreenInbox";
 import ToastNotification from "./ToastNotification";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -23,8 +21,7 @@ const stores = [
   {
     storeId: "MENTIONS_UNREAD",
     label: "Mentions",
-    query: { tags: "mentions", read: false },
-  },
+    query: { tags: "mentions", read: false } },
   //---------
   { storeId: "REPLIES", label: "Replies", query: { tags: "replies" } },
   {
@@ -35,8 +32,7 @@ const stores = [
   {
     storeId: "REPLIES_UNREAD",
     label: "Replies",
-    query: { tags: "replies", read: false },
-  },
+    query: { tags: "replies", read: false } },
 ];
 
 const Themes = { DARK: "DARK", LIGHT: "LIGHT" };
@@ -44,15 +40,16 @@ const Themes = { DARK: "DARK", LIGHT: "LIGHT" };
 export const InboxContext = createContext({});
 
 export default function App() {
-  const [theme] = useState(Themes.LIGHT); // change theme: Themes.DARK or Themes.LIGHT
+  const [theme] = useState(Themes.DARK); // change theme: Themes.DARK or Themes.LIGHT
 
   return (
-    <InboxContext.Provider value={{ theme, stores, styles: getStyles(theme) }}>
+    <InboxContext.Provider value={{ theme, stores, styles: darkTheme }}>
       <SuprSendProvider
-        workspaceKey={import.meta.env.VITE_WORKSPACE_KEY}
-        distinctId={import.meta.env.VITE_DISTINCT_ID}
-        subscriberId={import.meta.env.VITE_SUBSCRIBER_ID}
+        workspaceKey="pwrBVgn9AEqgxZ7ZEr8q"
+        distinctId="1234567"
+        subscriberId="RdNnvZqRI1ISuw2YyhhJNh1NZSO-2TgQOry9wr6cHrM"
         stores={stores}
+        theme={darkTheme}
       >
         <InboxTypes />
       </SuprSendProvider>
@@ -76,7 +73,6 @@ function InboxTypes() {
     });
   });
 
-  // uncomment inbox type you want to use
   return (
     <>
       <div
@@ -87,10 +83,6 @@ function InboxTypes() {
       >
         <PopUpInbox />
       </div>
-
-      {/* <SideSheetInbox /> */}
-
-      {/* <FullScreenInbox /> */}
       <ToastContainer />
     </>
   );
